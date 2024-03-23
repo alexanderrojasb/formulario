@@ -4,9 +4,12 @@ import eliminar from './img/ELIMINAR.svg'
 import agregar from './img/AGREGAR.svg'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import { Edit } from './components/Edit'
 
 function App() {
   const [contacts, setContacts] = useState([{ id: 1 }])
+  const [showEdit, setShowEdit] = useState(false); // Estado para controlar la visibilidad del componente Edit
+
 
   const addContact = () => {
     const newContactId = contacts.length + 1;
@@ -18,9 +21,17 @@ function App() {
     setContacts(updatedContacts);
   };
 
+  const handleEditClick = () => {
+    setShowEdit(true); // Mostrar el componente <Edit />
+  };
+
+  const handleCancelClick = () => {
+    setShowEdit(false); // Ocultar el componente <Edit />
+  };
+
   return (
-      <div class="container flex flex-col px-5 py-4 mx-auto">
-        <header class="flex flex-wrap mx-auto w-auto gap-2">
+      <div className="container flex flex-col px-5 py-4 mx-auto">
+        <header className="flex flex-wrap mx-auto w-auto gap-2">
           <a className='flex text-lg justify-center items-center gap-2 bg-gray-100 font-nunito rounded-t-2xl py-2 px-6'>
             Información
           </a>
@@ -34,8 +45,8 @@ function App() {
             Dirección
           </a>
         </header>
-        <div class=" bg-white shadow-container ring-gray-900/5 sm:mx-auto rounded-tr-2xl rounded-b-2xl w-574 h-auto pb-10 flex flex-col">
-          <div class="md:px-8 ">
+        <div className=" bg-white shadow-container ring-gray-900/5 sm:mx-auto rounded-tr-2xl rounded-b-2xl w-574 h-auto pb-10 flex flex-col">
+          <div className="md:px-8 ">
             {contacts.map((contact) => (
               <form key={contact.id} className='gap-4 flex flex-col py-3 border-t'>
                 <div className='flex justify-between'>
@@ -53,12 +64,21 @@ function App() {
             ))}
           </div>
         </div>
-        <footer className=" bg-white shadow-container ring-gray-900/5 sm:mx-auto my-7 rounded-2xl w-574 h-auto py-4 text-violet-blue font-nunito px-4 flex items-center flex-col">
-          <span className='flex gap-2 cursor-pointer' onClick={addContact}>
-            <img src={agregar} alt="" className=' w-5'/>
-            <p>Añadir nuevo contacto</p>
-          </span>
-        </footer>
+        <div className='sm:mx-auto'>
+          <footer className=" bg-white shadow-container ring-gray-900/5  my-7 rounded-2xl w-574 h-auto py-4 text-violet-blue font-nunito px-4 flex items-center flex-col">
+            <span className='flex gap-2 cursor-pointer text-lg' onClick={addContact}>
+              <img src={agregar} alt="" className=' w-5'/>
+              <p>Añadir nuevo contacto</p>
+            </span>
+          </footer>
+          {showEdit ? (
+            <Edit onCancelClick={handleCancelClick} />
+          ) : (
+            <div className='flex flex-inline items-start gap-5'>
+              <button className='shadow-button rounded-xl border border-black py-1 px-4 font-nunito text-lg' onClick={handleEditClick}>Editar</button>
+            </div>
+          )}
+        </div>
       </div>
   )
 }
