@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import eliminar from './img/ELIMINAR.svg'
 import agregar from './img/AGREGAR.svg'
@@ -9,6 +9,24 @@ import { Edit } from './components/Edit'
 function App() {
   const [contacts, setContacts] = useState([{ id: 1 }])
   const [showEdit, setShowEdit] = useState(false); // Estado para controlar la visibilidad del componente Edit
+  const [data, setData] = useState(null);
+  const options = {
+    method: 'GET',
+    headers: {
+      'Authorization' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3MDQ1NTIzOTcsImV4cCI6MTcwNDU1OTU5N30.aDgc09skB4zXJhIcy-jUb9-gXc-gVvDdxaGC2MTdmL8'
+    }
+  }
+  useEffect(() => {
+    fetch('http://sv-e2ukmdxmyh.cloud.elastika.pe/', options)
+    .then(res => {
+      if (res.ok) {
+        return res.json()
+      } else {
+        return res.json().then(err => Promise.reject(err))
+      }
+    })
+  }, [])
+  
 
 
   const addContact = () => {
@@ -47,7 +65,12 @@ function App() {
         </header>
         <div className=" bg-white shadow-container ring-gray-900/5 sm:mx-auto rounded-tr-2xl rounded-b-2xl w-574 h-auto pb-10 flex flex-col">
           <div className="md:px-8 ">
-            {contacts.map((contact) => (
+            <ul>
+            {data?.map((user) => (
+                <li key={user.id}>{user.contact_name}</li>
+            ))}
+            </ul>
+            {/* {contacts.map((contact) => (
               <form key={contact.id} className='gap-4 flex flex-col py-3 border-t'>
                 <div className='flex justify-between'>
                   <label htmlFor="" className='text-purple-dark font-nunito text-lg'>Contacto {contact.id}</label>
@@ -61,7 +84,7 @@ function App() {
                   <input type="text" name="" id="" className='w-full rounded-lg bg-gray-search py-2 px-4 border border-gray-400 text-base text-black focus:ring-2 outline-none ring-violet-blue ' placeholder='contact@empresa.com'/>
                 </div>
               </form>
-            ))}
+            ))} */}
           </div>
         </div>
         <div className='sm:mx-auto'>
