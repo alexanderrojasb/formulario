@@ -25,6 +25,7 @@ function App() {
         return res.json().then(err => Promise.reject(err))
       }
     })
+    .catch(console.log)
   }, [])
   
 
